@@ -1,0 +1,51 @@
+@page "/register"
+@using System.ComponentModel.DataAnnotations
+
+<h3>Event Registration</h3>
+
+<EditForm Model="@registration" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Name:</label>
+        <InputText class="form-control" @bind-Value="registration.Name" />
+        <ValidationMessage For="@(() => registration.Name)" />
+    </div>
+
+    <div class="mb-3">
+        <label>Email:</label>
+        <InputText class="form-control" @bind-Value="registration.Email" />
+        <ValidationMessage For="@(() => registration.Email)" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Register</button>
+</EditForm>
+
+@if (submitted)
+{
+    <div class="alert alert-success mt-3" style="color: green;">
+        Registration Successful for @registration.Name!
+    </div>
+}
+
+@code {
+    private RegistrationModel registration = new RegistrationModel();
+    private bool submitted = false;
+
+    private void HandleValidSubmit()
+    {
+        submitted = true;
+    }
+
+    public class RegistrationModel
+    {
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 50 characters")]
+        public string Name { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string Email { get; set; } = string.Empty;
+    }
+}
