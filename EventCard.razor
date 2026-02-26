@@ -1,0 +1,33 @@
+@using EventEase.Models
+
+<div class="card" style="width: 18rem; margin: 10px; border: 1px solid #ccc; padding: 10px;">
+    <div class="card-body">
+        <h5 class="card-title">
+            <input @bind-value="EventData.Title" class="form-control" placeholder="Event Title" />
+        </h5>
+        
+        <p class="card-text">
+            <strong>Date:</strong> 
+            <input type="date" @bind-value="EventData.Date" class="form-control" />
+        </p>
+        
+        <p class="card-text">
+            <strong>Location:</strong> 
+            <input @bind-value="EventData.Location" class="form-control" />
+        </p>
+        
+        <button class="btn btn-primary" @onclick="HandleRSVP">
+            RSVP (@EventData.Attendees)
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Event EventData { get; set; } = new Event();
+
+    private void HandleRSVP()
+    {
+        EventData.Attendees++;
+    }
+}
